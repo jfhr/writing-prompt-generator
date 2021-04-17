@@ -83,7 +83,7 @@ class WritingPromptGenerator {
             'romantic story',
             'romcom',
             'historical drama',
-            'ya story',
+            'YA story',
             'thriller',
             'horror story',
         ],

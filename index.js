@@ -117,17 +117,19 @@ class WritingPromptGenerator {
         return this.substituteTokens(template);
     }
 
-    substituteTokens(value) {
+    substituteTokens(value, exclude = null) {
+        if (exclude === null) {
+            exclude = [];
+        }
         const output = [];
-        const choices = [];
         let pushA = false;
 
         for (const token of value.split(' ')) {
             if (token.startsWith('!')) {
                 const insertTokenType = token.substr(1);
-                const insert = this.randomChoiceExcept(this.tokens[insertTokenType], choices);
-                choices.push(insert);
-                const subst = this.substituteTokens(insert);
+                const insert = this.randomChoiceExcept(this.tokens[insertTokenType], exclude);
+                exclude.push(insert);
+                const subst = this.substituteTokens(insert, exclude);
                 if (pushA) {
                     if (this.startsWithVowel(subst)) {
                         output.push('an');

@@ -131,23 +131,26 @@ class WritingPromptGenerator {
                 exclude.push(insert);
                 const subst = this.substituteTokens(insert, exclude);
                 if (pushA) {
-                    if (this.startsWithVowel(subst)) {
-                        output.push('an');
-                    } else {
-                        output.push('a');
-                    }
+                    output.push(this.getAOrAn(subst));
                     pushA = false;
                 }
                 output.push(subst);
             } else if (token === 'a') {
                 pushA = true;
             } else {
+                if (pushA) {
+                    output.push(this.getAOrAn(token));
+                    pushA = false;
+                }
                 output.push(token);
-                pushA = false;
             }
         }
 
         return output.join(' ');
+    }
+
+    getAOrAn(followingWord) {
+        return this.startsWithVowel(followingWord) ? 'an' : 'a';
     }
 
     startsWithVowel(value) {
